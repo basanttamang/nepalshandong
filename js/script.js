@@ -28,6 +28,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // ===== Gallery placeholder fallback =====
+  document.querySelectorAll(".gallery-item img").forEach(function (img) {
+    function showPlaceholder() {
+      img.style.display = "none";
+      var placeholder = img.nextElementSibling;
+      if (placeholder) placeholder.style.display = "flex";
+    }
+    if (img.complete && img.naturalWidth === 0) {
+      showPlaceholder();
+    } else {
+      img.addEventListener("error", showPlaceholder);
+    }
+  });
+
   // ===== Footer year =====
   var yearEl = document.getElementById("year");
   if (yearEl) {
@@ -77,9 +91,24 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      var name = form.querySelector('[name="name"]').value.trim();
+      var email = form.querySelector('[name="email"]').value.trim();
+      var subject = form.querySelector('[name="subject"]').value.trim();
+      var message = form.querySelector('[name="message"]').value.trim();
+
+      var mailSubject = subject || "Website inquiry from " + name;
+      var mailBody = "Name: " + name + "\nEmail: " + email + "\n\n" + message;
+
+      var mailtoLink =
+        "mailto:ibasanttamang@gmail.com" +
+        "?subject=" + encodeURIComponent(mailSubject) +
+        "&body=" + encodeURIComponent(mailBody);
+
+      window.location.href = mailtoLink;
+
       status.className = "form-status success";
       status.textContent =
-        "Thank you! Your message has been received. We will get back to you soon.";
+        "Opening your email app to send this message. If it doesn't open, please email us directly at ibasanttamang@gmail.com.";
       form.reset();
     });
   }
