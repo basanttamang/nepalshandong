@@ -338,19 +338,60 @@ textarea:focus-visible {
 }
 .gallery-placeholder .icon-svg { width: 28px; height: 28px; }
 .gallery-placeholder span { font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; color: var(--muted); }
-.gallery-note {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  background: var(--accent-soft);
-  border: 1px solid #fde68a;
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  margin-bottom: 40px;
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.88);
+  padding: 40px;
 }
-.gallery-note .icon-svg { width: 22px; height: 22px; color: var(--accent-dark); flex-shrink: 0; margin-top: 2px; }
-.gallery-note p { margin: 0; color: var(--accent-soft-text); font-size: 0.94rem; }
-.gallery-note strong { color: var(--text); }
+.lightbox.is-open { display: flex; }
+.lightbox-img {
+  max-width: min(90vw, 1100px);
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: 50%;
+  transition: background 150ms var(--ease);
+}
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover { background: rgba(255, 255, 255, 0.25); }
+.lightbox-close {
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  font-size: 28px;
+}
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  font-size: 34px;
+}
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+@media (max-width: 640px) {
+  .lightbox { padding: 16px; }
+  .lightbox-prev, .lightbox-next { width: 40px; height: 40px; font-size: 26px; }
+}
 
 /* ===== CTA banner ===== */
 .cta-banner {
@@ -530,5 +571,4 @@ textarea { resize: vertical; min-height: 130px; }
   .hero { padding: 72px 0 56px; }
   .cta-banner { padding: 48px 24px; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
-  .gallery-note { flex-direction: column; gap: 10px; }
 }

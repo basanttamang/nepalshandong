@@ -42,6 +42,54 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // ===== Gallery lightbox =====
+  var lightbox = document.getElementById("lightbox");
+  if (lightbox) {
+    var lightboxImg = document.getElementById("lightbox-img");
+    var galleryImgs = Array.prototype.map.call(
+      document.querySelectorAll(".gallery-item img"),
+      function (img) { return img; }
+    );
+    var currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImg.src = galleryImgs[currentIndex].src;
+      lightboxImg.alt = galleryImgs[currentIndex].alt;
+      lightbox.classList.add("is-open");
+    }
+    function closeLightbox() {
+      lightbox.classList.remove("is-open");
+      lightboxImg.src = "";
+    }
+    function showRelative(offset) {
+      currentIndex = (currentIndex + offset + galleryImgs.length) % galleryImgs.length;
+      lightboxImg.src = galleryImgs[currentIndex].src;
+      lightboxImg.alt = galleryImgs[currentIndex].alt;
+    }
+
+    galleryImgs.forEach(function (img, index) {
+      img.closest(".gallery-item").addEventListener("click", function () {
+        openLightbox(index);
+      });
+    });
+
+    lightbox.querySelector(".lightbox-close").addEventListener("click", closeLightbox);
+    lightbox.querySelector(".lightbox-prev").addEventListener("click", function () { showRelative(-1); });
+    lightbox.querySelector(".lightbox-next").addEventListener("click", function () { showRelative(1); });
+
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") showRelative(-1);
+      if (e.key === "ArrowRight") showRelative(1);
+    });
+  }
+
   // ===== Footer year =====
   var yearEl = document.getElementById("year");
   if (yearEl) {
